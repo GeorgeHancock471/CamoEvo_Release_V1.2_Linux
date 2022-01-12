@@ -1,0 +1,8 @@
+Target = 	Default_Egg
+Generation = 	30
+PopSize = 	24
+NumSlide = 	1
+TimeOutTime = 	15000
+StartSpace = 	0	1	0	1	0	0
+ColourSpace = 	0	1	0	1	0	0
+FitnessValue = 	Camouflage

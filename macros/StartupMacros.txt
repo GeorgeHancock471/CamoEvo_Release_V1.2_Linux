@@ -43,7 +43,8 @@
      saveAs("Jpeg");
   }
 
-doCommand("CamoEvo Game");
 
+
+run("CamoEvo Game");
 
 

@@ -1,0 +1,7 @@
+Target=	Default_Egg
+blank
+blank
+blank
+blank
+blank
+ColourSpace =		0	1	0	1	-20	50
