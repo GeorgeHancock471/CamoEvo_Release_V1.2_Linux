@@ -9,6 +9,4 @@ Default_Grasshopper	Grasshopper	150	Animals	200	-180	180	1	1	yes
 Default_Newt	Newt	150	Animals	200	-180	180	1	1	yes
 Default_Toad	Toad	150	Animals	200	-180	180	1	1	yes
 Default_Crab	Crab	150	Animals	200	-180	180	1	1	yes
-Custom_Raptor	Velociraptor	150	Experimental	400	-2	2	1	1	no
-Custom_Lizard	Lizard	150	Experimental	200	-180	180	1	0	yes
-Custom_Egg	Egg	120	Eggs2	200	-180	180	0.5	0.3	no
+Exp_Triangle	Triangle	172	Animals	200	-40	40	0	0	no

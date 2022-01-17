@@ -159,6 +159,7 @@ if(useDataSetGate == 1){
 
 	TargetChoice =  split(popRows[0], "\t");
 	TargetChoice =  TargetChoice[1];
+	
 
 	TargetDirectory = getDirectory("plugins")+ "1 CamoEvo/Targets/";
 
@@ -180,6 +181,8 @@ if(useDataSetGate == 1){
 	TargetPatternChoice = TargetChoiceSettings[3];
 	TargetChoiceMinRotation = parseFloat(TargetChoiceSettings[5]);
 	TargetChoiceMaxRotation = parseFloat(TargetChoiceSettings[6]);
+	
+	
 
 }
 
@@ -317,23 +320,9 @@ File.close(dataFile);
 //Create Patterns
 //----------------------------------------------------------------------------------	
 	
-	//setBatchMode(true);
+generateString = "Generate "+ TargetPatternChoice;
 
-		if(TargetPatternChoice =="egg"){
-		run("Generate Eggs");
-		}
-
-		if(TargetPatternChoice =="animal_uni" || TargetPatternChoice =="animal_bil"){
-		run("Generate Targets");
-		}
-
-		if(TargetPatternChoice =="camo_wild"){
-		run("Camo Targets");
-		}
-
-		if(TargetPatternChoice =="advanced_bil" || TargetPatternChoice =="advanced_uni"){
-		run("Generate Animals");
-		}
+run(generateString);
 
 
 
