@@ -226,6 +226,9 @@ xArray = newArray(recordLines.length);
 yArray = newArray(recordLines.length);
 fArray = newArray(recordLines.length);
 aArray = newArray(recordLines.length);
+cXArray = newArray(recordLines.length);
+cYArray = newArray(recordLines.length);
+
 
 
 bgIndex = index(recordLabels,"Image_ID");
@@ -234,6 +237,8 @@ xIndex = index(recordLabels,"X_Coordinate");
 yIndex = index(recordLabels,"Y_Coordinate");
 flipIndex = index(recordLabels,"Flip");
 angleIndex = index(recordLabels,"Rotation");
+cXIndex = index(recordLabels,"Crop_X");
+cYIndex = index(recordLabels,"Crop_Y");
 
 for(i=0;i<recordLines.length;i++){
 
@@ -245,6 +250,8 @@ xArray[i] = parseFloat(tArray[xIndex]);
 yArray[i] = parseFloat(tArray[yIndex]);
 fArray[i] = tArray[flipIndex];
 aArray[i] = parseFloat(tArray[angleIndex]);
+cXArray[i] = parseFloat(tArray[cXIndex]);
+cYArray[i] = parseFloat(tArray[cYIndex]);
 
 }
 }
