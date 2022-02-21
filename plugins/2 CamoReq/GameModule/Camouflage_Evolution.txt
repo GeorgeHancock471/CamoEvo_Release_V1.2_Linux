@@ -326,6 +326,7 @@ TargetSetting = TargetSet[1];
 FitnessM = split(PopulationSettings[7],"\t");
 FitnessMeasure = FitnessM[1];
 
+
 if(PopulationSettings.length<9){
 
 fitnessMethod = "Survival"; // (left&right , survival, response, capture, rank)
@@ -1060,6 +1061,8 @@ if(fitnessMethod == "Rank") tString= tArray[1];
 if(fitnessMethod == "Survival") tString= tArray[2];
 if(fitnessMethod == "Response")  tString= tArray[3];
 if(fitnessMethod == "Capture" || fitnessMethod == "Left&Right") tString= tArray[4];
+
+if(FitnessMeasure=="Signalling") tString=parseFloat(tString)*-1;
 
 }
 
@@ -2018,6 +2021,18 @@ run("Canvas Size...", ts2);
 
 			roiManager("Select", roiManager("Count")-1);
 			roiManager("rename", "prey_"+nameNumber);
+			
+			
+			if(imageMod != "none"){
+			run(imageMod);
+			}
+
+			
+			
+			
+			
+			
+			
 			roiManager("deselect");
 
 			roiManager("Select", roiManager("Count")-2);
@@ -2336,6 +2351,8 @@ run("Canvas Size...", ts2);
 			YcoordArray = Array.concat(YcoordArray, parseFloat(temp[27]));
 			rotationArray = Array.concat(rotationArray, parseFloat(temp[28]));
 			flipArray = Array.concat(flipArray, temp[29]);
+			XcropArray = Array.concat(XcropArray, temp[30]);
+			YcropArray = Array.concat(YcropArray, temp[31]);
  
 			}
 			}
@@ -2432,7 +2449,7 @@ scaledGabRat = Array.concat(scaledGabRat, (GabRat_MeanArray[i]-mean)/stdDev);
 			
 dataFile = File.open(survivalDIR+"Data_Output_" + FolderName + ".txt");  
 
-printArray = Array.concat("Generation", "ID","Fitness","Rank", "Survival_Time", "Response_Time", "Capture_Time", "Luminance_Difference", "Contrast_Difference", "Colour_Difference", "Luminance_Edge_Disruption", "Green-Red_Edge_Disruption", "Blue-Yellow_Edge_Disruption","BgLocal_L_mean", "BgLocal_L_contrast", "BgLocal_A_mean", "BgLocal_A_contrast", "BgLocal_B_mean","BgLocal_B_contrast", "Target_L_mean", "Target_L_contrast", "Target_A_mean", "Target_A_contrast", "Target_B_mean", "Target_B_contrast",  "Image_ID", "X_Coordinate", "Y_Coordinate", "Rotation", "Flip");
+printArray = Array.concat("Generation", "ID","Fitness","Rank", "Survival_Time", "Response_Time", "Capture_Time", "Luminance_Difference", "Contrast_Difference", "Colour_Difference", "Luminance_Edge_Disruption", "Green-Red_Edge_Disruption", "Blue-Yellow_Edge_Disruption","BgLocal_L_mean", "BgLocal_L_contrast", "BgLocal_A_mean", "BgLocal_A_contrast", "BgLocal_B_mean","BgLocal_B_contrast", "Target_L_mean", "Target_L_contrast", "Target_A_mean", "Target_A_contrast", "Target_B_mean", "Target_B_contrast",  "Image_ID", "X_Coordinate", "Y_Coordinate", "Rotation", "Flip","Crop_X","Crop_Y");
 
 printString = String.join(printArray, "\t");
 
@@ -2443,7 +2460,7 @@ print(dataFile, printString);
 
 for(i=0; i< GenArray.length;i++){
 
-printArray = Array.concat(GenArray[i], IDarray[i], FitnessArray[i],RankingArray[i],SurvivalArray[i], ResponseArray[i], CaptureArray[i], LumArray2[i], PatternArray2[i], ColourArray2[i], GabRatArray2[i],GabRatArray_A2[i],GabRatArray_B2[i],bgLumArray2[i],bgCtrstArray2[i],bgAvalArray2[i], bgAconArray2[i], bgBvalArray2[i], bgBconArray2[i], targetLumArray2[i],targetCtrstArray2[i],targetAvalArray2[i],targetAconArray2[i],targetBvalArray2[i], targetBconArray2[i],imageNumArray[i], XcoordArray[i], YcoordArray[i], rotationArray[i], flipArray[i] );
+printArray = Array.concat(GenArray[i], IDarray[i], FitnessArray[i],RankingArray[i],SurvivalArray[i], ResponseArray[i], CaptureArray[i], LumArray2[i], PatternArray2[i], ColourArray2[i], GabRatArray2[i],GabRatArray_A2[i],GabRatArray_B2[i],bgLumArray2[i],bgCtrstArray2[i],bgAvalArray2[i], bgAconArray2[i], bgBvalArray2[i], bgBconArray2[i], targetLumArray2[i],targetCtrstArray2[i],targetAvalArray2[i],targetAconArray2[i],targetBvalArray2[i], targetBconArray2[i],imageNumArray[i], XcoordArray[i], YcoordArray[i], rotationArray[i], flipArray[i], XcropArray[i],YcropArray[i] );
 
 printString = String.join(printArray, "\t") + "\t" + genomeArray[i];
 

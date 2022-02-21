@@ -679,6 +679,9 @@ ovalCY = (getHeight/2);
 rectW = ovalW*3;
 rectH = rectW/20;
 
+
+if(transitionMethod != "wait" && transitionMethod != "click"){ 
+
 makeRectangle(getWidth/2 - rectW/2,getHeight/2 - rectH/2, rectW,rectH);
 fill();
 makeRectangle(getWidth/2 - rectH/2,getHeight/2 - rectW/2, rectH,rectW);
@@ -690,6 +693,19 @@ setColor("white");
 setLineWidth(5);
 drawOval(ovalX, ovalY, ovalW, ovalH);
 
+} else {
+
+rectW = ovalW*20;
+rectH = rectW/20;
+
+setColor("white");
+drawRect(getWidth/2 - rectW/2,getHeight/2 - rectH/2, rectW,rectH);
+
+rectX=getWidth/2 - rectW/2;
+rectY=getHeight/2 - rectH/2;
+
+
+}
 
 
 //================================================
@@ -820,6 +836,13 @@ selectImage("Target");
 		selectImage("Target");
 		roiManager("select", roiManager("count")-1);
 		
+		
+		Roi.getBounds(a, b, targetW, targetH);
+		
+
+	if(spawnSystem!="grid" && spawnSystem!="wild" ){		
+
+		
 		if(spawnSystem!="random"){
 		run("Lab Stack");
 
@@ -834,7 +857,7 @@ selectImage("Target");
 		run("RGB Color");
 		}
 		
-		Roi.getBounds(a, b, targetW, targetH);
+
 		major=targetW;
 		if(targetH>targetW) major = targetH;
 
@@ -870,7 +893,7 @@ count=0;
 
 
 
-		if(spawnSystem != "none"){
+		if(spawnSystem != "none" && spawnSystem != "grid" && spawnSystem != "wild"){
 
 
 		selectImage("GameSlides");
@@ -974,7 +997,7 @@ count=0;
 		}}
 		
 		
-		if(spawnSystem != "random")close("measure");
+		if(spawnSystem != "random" || spawnSystem != "grid" || spawnSystem != "wild")close("measure");
 
 		
 		// Grey Distance
@@ -1018,7 +1041,11 @@ count=0;
 		orderArray = Array.rankPositions(distanceArray);
 
 		
-		}		
+		
+		
+		
+		
+}		
 			nX = (random()*major) - major/2;
 			nY = (random()*major) - major/2;
 			
@@ -1108,7 +1135,95 @@ count=0;
 				wait(200);
 	
 	*/
+	
+
+	
+	} // end Gate
+	
+	
+	
+
+	
+	
+	
+	
+	} // Not Grid
+	
+	
+	
+	// Grid System As used by Camo Wild
+	//=======================================================
+	
+	if(spawnSystem=="grid" || spawnSystem == "wild"){
+	
+
+	
+	selectImage("GameSlides");
+		
+		
+	setSlice(2+(floor(i/numPerSlide)));
+	run("Select All");
+	
+	
+	//Check Grid.
+	
+	gridInt = 7;
+	gridSize = getWidth()/gridInt;
+	
+	
+	if(i/numPerSlide==parseInt(i/numPerSlide)){
+	gridCount=0;
+	gridArrayX = Array.getSequence(gridInt);
+	
+	if(spawnSystem=="wild") gridArrayX=Array.deleteIndex(gridArrayX, (gridArrayX.length-1) );
+	if(spawnSystem=="wild") gridArrayX=Array.deleteIndex(gridArrayX, 0);
+	
+	gridArrayX=Array.deleteIndex(gridArrayX, (gridArrayX.length-1)*random() );
+	
+	gridArrayY =  Array.getSequence(gridInt);
+	if(spawnSystem=="wild") gridArrayY=Array.deleteIndex(gridArrayY, (gridArrayX.length-1) );
+	if(spawnSystem=="wild") gridArrayY=Array.deleteIndex(gridArrayY, 0);
+	
+	priorGridY = -1;
 	}
+	
+	
+	
+	/*
+	for(X=0;X<gridInt;X++){
+	for(Y=0;Y<gridInt;Y++){
+	drawRect(X*gridSize,Y*gridSize,gridSize,gridSize);
+	}}
+	
+	*/
+	
+	gridX = gridArrayX[gridCount]*gridSize + gridSize/2 - targetW/2;
+	
+	
+	happyGrid=0;
+	
+	while(happyGrid==0){
+	gridY = gridArrayY[(gridArrayY.length-1)*random()];
+	checkGr = Math.sqrt(Math.sqr(gridY-priorGridY));
+	if(checkGr>0) happyGrid=1;
+	}
+	
+	priorGridY=gridY;
+	
+	gridY = gridY*gridSize + gridSize/2 - targetH/2;
+	
+	Xcoord=gridX+random("gaussian")*10;
+	Ycoord=gridY+random("gaussian")*10;
+	
+
+	
+	gridCount=gridCount+1;
+
+
+	
+	}
+	
+	
 	
 
 priorX = Xcoord;
@@ -1151,7 +1266,7 @@ setSlice(2+(floor(i/numPerSlide)));
 
 		setPasteMode("Transparent-zero");
 		run("Paste");
-		run("Gaussian Blur...", "sigma=0.5 slice");
+		//run("Gaussian Blur...", "sigma=0.5 slice");
 		
 		//waitForUser("");
 
@@ -1174,6 +1289,8 @@ setSlice(2+(floor(i/numPerSlide)));
 
 targetXcoords=Array.concat(targetXcoords,Xcoord);
 targetYcoords=Array.concat(targetYcoords,Ycoord);
+
+
 
 
 // Add ROIS
@@ -1209,12 +1326,15 @@ roiManager("Select", roiManager("Count")-1);
 roiManager("rename", "local_"+nameNumber);
 
 
-roiManager("select",0);
+roiManager("select", roiManager("count")-5);
 
 if(imageMod != "none"){
 run(imageMod);
 }
 
+run("Gaussian Blur...", "sigma=0.1 slice");
+
+//TestPoint("");
 
 roiManager("Select", newArray(roiManager("Count")-2,roiManager("Count")-3, roiManager("Count")-4) );
 roiManager("delete");
@@ -1616,13 +1736,23 @@ if(getSliceNumber() != (1+(j*2))){
 setSlice(1);
 }
 
+	if(transitionMethod != "wait" && transitionMethod != "click"){ 
 
+	setColor("black");
+	fillOval(ovalX, ovalY, ovalW, ovalH);
+	setColor("white");
+	setLineWidth(5);
+	drawOval(ovalX, ovalY, ovalW, ovalH);
+
+	} else {
 
 setColor("black");
-fillOval(ovalX, ovalY, ovalW, ovalH);
+fillRect(cropWidth/2 + rectX,rectY, rectW,rectH);
 setColor("white");
-setLineWidth(5);
-drawOval(ovalX, ovalY, ovalW, ovalH);
+drawRect(cropWidth/2 + rectX,rectY, rectW,rectH);
+
+
+}
 
 
 centreGate=0;
@@ -1632,11 +1762,23 @@ vLeng=9;
 fillCheck = 0;
 while(centreGate==0){
 
+	if(transitionMethod != "wait" && transitionMethod != "click"){ 
+
+	setColor("black");
+	fillOval(ovalX, ovalY, ovalW, ovalH);
+	setColor("white");
+	setLineWidth(5);
+	drawOval(ovalX, ovalY, ovalW, ovalH);
+
+	}  else {
+
 setColor("black");
-fillOval(ovalX, ovalY, ovalW, ovalH);
+fillRect(cropWidth/2 + rectX,rectY, rectW,rectH);
 setColor("white");
-setLineWidth(5);
-drawOval(ovalX , ovalY, ovalW, ovalH);
+drawRect(cropWidth/2 + rectX,rectY, rectW,rectH);
+
+
+}
 
 for(v=0;v<vLeng;v++){
 setSlice(1);
@@ -1653,34 +1795,56 @@ speedCheck = Math.sqrt(Math.sqr(x1-x2)+Math.sqr(y1-y2))/100;
 if(transitionMethod == "centre") fillCheck = 0;
 
 if(x2>ovalX && y2>ovalY && x2<(ovalX+ovalW) && y2<(ovalY+ovalH) && transitionMethod == "centre") fillCheck=1;
-if(transitionMethod == "wait") fillCheck=1;
 
+if(transitionMethod == "wait"){ fillCheck=1;  centreGate=1;}
 if(transitionMethod == "click" && modifiers&leftButton!=0) fillCheck=1;
 if(transitionMethod == "click" && modifiers&rightButton!=0) fillCheck=1;
 
-if(fillCheck==1){
-centreGate=1;
-greyColor = 255/vLeng;
-greyColor = v*greyColor;
-setColor(greyColor,greyColor,greyColor);
-fillOval(ovalX, ovalY, ovalW, ovalH);
-}else{
+	if(transitionMethod != "wait" && transitionMethod != "click" ){
 
-v=0;
-setColor("black");
-fillOval(ovalX, ovalY, ovalW, ovalH);
-setColor("white");
-setLineWidth(5);
-drawOval(ovalX, ovalY, ovalW, ovalH);
-centreGate=0;
-}
+		if(fillCheck==1){
+		centreGate=1;
+		greyColor = 255/vLeng;
+		greyColor = v*greyColor;
+		setColor(greyColor,greyColor,greyColor);
+		fillOval(ovalX, ovalY, ovalW, ovalH);
+		}else{
+
+		v=0;
+		setColor("black");
+		fillOval(ovalX, ovalY, ovalW, ovalH);
+		setColor("white");
+		setLineWidth(5);
+		drawOval(ovalX, ovalY, ovalW, ovalH);
+		centreGate=0;
+		}
+
+	
+
+	} else {
+	
+	
+		if(fillCheck==1){
+		centreGate=1;
+		setColor("white");
+		fillRect(cropWidth/2+rectX, rectY, rectW/vLeng*(v+1), ovalH);
+		wait(10);
+		}
+	
+	
+	
+	
+	}
+	
+	
+	
+	
+	
 
 
 
-
-
-}
-}
+} // vLeng
+} // (While)
 
 
 getCursorLoc(x, y, z, modifiers);

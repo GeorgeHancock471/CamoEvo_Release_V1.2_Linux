@@ -2,7 +2,7 @@
 custom
 24
 10
-uniform
+random
 fraction
 0.66666
 0.33333

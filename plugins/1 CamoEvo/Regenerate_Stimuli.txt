@@ -86,7 +86,7 @@ useDataSetGate = 0;
 // Then recreate stimuli with the recreator.
 
 oldCheck=1;
-if(!File.exists(popDIR + "GenPat_0_Combined/")) oldCheck=0;
+if(!File.exists(popDIR + "gen_0_ranks")) oldCheck=0;
 
 if(numGenArray.length<1 || oldCheck==0){
 
@@ -114,6 +114,8 @@ genChoice = parseInt(Dialog.getChoice());
 
 // STEP 2, Get the Records
 ///==========================================================================================
+
+//useDataSetGate=0;
 
 if(useDataSetGate == 0){
 
@@ -240,9 +242,13 @@ angleIndex = index(recordLabels,"Rotation");
 cXIndex = index(recordLabels,"Crop_X");
 cYIndex = index(recordLabels,"Crop_Y");
 
+Array.show(recordLabels);
+
 for(i=0;i<recordLines.length;i++){
 
 tArray = split(recordLines[i],"\t");
+
+
 
 bgArray[i] = tArray[bgIndex];
 idArray[i] = tArray[idIndex];
@@ -325,6 +331,20 @@ TargetChoiceScale = parseFloat(TargetChoiceScale);
 
 
 
+//targetMod
+//.........
+tArr = split(gameSettings[14],"\t");
+targetMod = tArr[1];
+
+//imageMod
+//.........
+tArr = split(gameSettings[15],"\t");
+imageMod = tArr[1];
+
+
+
+
+
 // STEP 4, Create Image(s)
 ///==========================================================================================
 
@@ -362,6 +382,13 @@ run("Crop");
 if(File.exists(targetChoice)){
 	open(targetChoice);
 	rename("Target");
+	
+	
+	if(targetMod != "none"){
+	run(targetMod);
+	}
+
+	
 }
 
 // If files don't exist
@@ -497,7 +524,7 @@ selectImage("Background");
 
 		setPasteMode("Transparent-zero");
 		run("Paste");
-		run("Gaussian Blur...", "sigma=0.5 slice");
+		//run("Gaussian Blur...", "sigma=0.5 slice");
 		
 
 	
@@ -556,6 +583,16 @@ roiManager("rename", "local_"+nameNumber);
 
 roiManager("Select", newArray(roiManager("Count")-2,roiManager("Count")-3, roiManager("Count")-4) );
 roiManager("delete");
+
+
+roiManager("select", roiManager("count")-2);
+
+if(imageMod != "none"){
+run(imageMod);
+}
+
+run("Gaussian Blur...", "sigma=0.1 slice");
+
 
 
 // Save ROI coordinates

@@ -135,7 +135,7 @@ numGen = survivalArray.length-1;
 //------------------------------------------------------
 
 
-	popSettings = File.openAsString(survivalDIR + "PopulationSettings.txt");
+	popSettings = File.openAsString(survivalDIR + "Settings_Population.txt");
 	popRows = split(popSettings, "\n");
 	popSize = split(popRows[2], "\t");
 	popSize = popSize[1];
