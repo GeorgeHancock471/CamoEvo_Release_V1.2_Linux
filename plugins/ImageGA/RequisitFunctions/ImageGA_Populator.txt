@@ -334,7 +334,7 @@ Generation0Rows[0] = geneNameStr;
 geneDistSeq = newArray(populationSize);
 
 for(i=0; i<geneDistSeq.length; i++){
-geneDistSeq[i] = (i+1)*(1/(populationSize+1));
+geneDistSeq[i] = (i)*(1/(populationSize-1));
 }
 
 for(j=0; j < geneNames.length; j++) {
@@ -516,45 +516,85 @@ Generation0Rows[i] = String.join(rowArray, "\t");
 	}
 
 
-
-// Gaussian Population
+// NormalDist Population
 //------------------------------------------------
 
-if (populationGenotype=="normalDist")	{ 
+if (populationGenotype=="normal")	{
 
 Generation0Rows = newArray(populationSize+1);
 
 geneNameStr = String.join(geneNames, "\t");
 Generation0Rows[0] = geneNameStr;
 
-for(i=1; i < Generation0Rows.length; i++){
-rowArray = newArray(geneNames.length);
+geneDistSeq = newArray(populationSize);
+
+for(i=0; i<geneDistSeq.length; i++){
+
+g = (i)*(1/(populationSize-1));
+
+sg = sin(g*PI);
+
+if(i<(geneDistSeq.length/2)){
+	geneDistSeq[i]  = pow(sg,0.75)*0.5;
+} else {
+	geneDistSeq[i]  = 0.5 + (1-pow(sg,0.75))*0.5;
+}
+
+}
 
 for(j=0; j < geneNames.length; j++) {
 
-if(j==0) rowArray[j] = "Gen0_Mut0_ID"+i-1; 	// ID
+if(j==0) {
+for(i=1; i < Generation0Rows.length; i++){
+Generation0Rows[i] = "Gen0_Mut0_ID"+i-1; 		// ID
 
-if(j==1 || j==2) rowArray[j] = "-"; 	// Parent
+} // (i)
+} // (if)
 
-if(j==3){  									// Sex
+if(j==1 || j==2) {
+for(i=1; i < Generation0Rows.length; i++){
+Generation0Rows[i] = Generation0Rows[i] + "\t" + "-"; 				// Parent
+} // (i)
+} // (if)
+
+
+if(j==3){ 								// Sex
+for(i=1; i < Generation0Rows.length; i++){
 	if(inableSex==1){
-	if(parseInt(i/2) == i/2){ rowArray[j] = "m"; } else { rowArray[j] = "f"; } }
-	if(inableSex==0) rowArray[j] = "-"; 
-}
-if(j>3){									// Gene
-tVal = 0.5;
-tVal2 = tVal + random("gaussian")/5;
-if(tVal2>1) tVal2=1;
-if(tVal2<0) tVal2=0;
+	if(parseInt(i/2) == i/2) Generation0Rows[i] =  Generation0Rows[i] + "\t" + "m";
+	if(parseInt(i/2) != i/2) Generation0Rows[i] =  Generation0Rows[i] + "\t" +  "f";
+	}
+	if(inableSex==0)  Generation0Rows[i] =  Generation0Rows[i] + "\t" +  "-"; 
+	
+} // (i)
+} // (if)
 
 
-rowArray[j] = tVal2;
+
+if(j>3){								// Gene
+
+randSeq1 = newArray(geneDistSeq.length);
+for(i=0; i<geneDistSeq.length;i++){
+randSeq1[i] = random();
+} // (i)
+randSeq2 = Array.rankPositions(randSeq1);
+
+for(i=1; i < Generation0Rows.length; i++){
+
+tIndex = randSeq2[i-1];
+tVal = geneDistSeq[tIndex];
+
+Generation0Rows[i] =  Generation0Rows[i] + "\t" + tVal;
+
+
 }
+
+
+} // (gene)
 
 } // (j)
-Generation0Rows[i] = String.join(rowArray, "\t");
-} // (i)
-	
+
+
 	
 // Save the genes 
 //---------------------------------
@@ -570,4 +610,55 @@ Generation0Rows[i] = String.join(rowArray, "\t");
 
 	}
 
+
+
+//Modify Genotype Ranges
+//=============================================================
+geneRangeDIR = popDIR+"Transform_StartGeneRanges.txt";
+
+if(File.exists(geneRangeDIR)&&populationGenotype!="standard"){
+
+geneSTR = File.openAsString(StartingGen);
+GenesRows=split(geneSTR,"\n");
+
+Temp=split(GenesRows[0]);
+
+
+geneRangeSTR = File.openAsString(geneRangeDIR );
+geneRangeARR = split(geneRangeSTR,"\n");
+geneRangeMIN =  split(geneRangeARR[1],"\t");
+geneRangeMAX =  split(geneRangeARR[2],"\t");
+
+	for(i=1;i<GenesRows.length;i++){
+	
+	tArr = split(GenesRows[i],"\t");
+
+	for(j=4;j<Temp.length;j++){
+	
+	tV = parseFloat(tArr[j]);
+	
+	tMx =  parseFloat(geneRangeMAX[j]);
+	tMn =  parseFloat(geneRangeMIN[j]);
+	
+	tArr[j] = tV *(tMx-tMn) + tMn;
+
+	}
+	
+	GenesRows[i] = String.join(tArr,"\t");
+	
+	}
+	
+
+
+genesSTR = String.join(GenesRows,"\n");
+
+File.delete(StartingGen);
+File.append(genesSTR,StartingGen);
+
 }
+
+//=============================================================
+
+
+
+

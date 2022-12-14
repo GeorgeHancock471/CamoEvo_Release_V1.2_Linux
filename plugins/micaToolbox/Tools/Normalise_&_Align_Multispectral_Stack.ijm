@@ -252,4 +252,4 @@ for(j=0; j<nSlices; j++){
 
 }//j
 
-setMinAndMax(0, 100);
+run("Set Min And Max", "min=0 max=100");

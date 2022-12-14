@@ -13,6 +13,19 @@ Allows the user to test how different values influence the phenotype and also ou
 */
 
 
+// Index
+//---------------------------------------------------
+// Allows you to obtain the index of a Value within an Array.
+
+  function index(a, value) {
+      for (i=0; i<a.length; i++)
+          if (a[i]==value) return i;
+      return -1;
+  }
+  
+
+
+
 randomCheck=0;
 
 
@@ -472,15 +485,23 @@ importDIR = File.openDialog("Select the Folder you wish to download your genome 
 
 ImportString=File.openAsString(importDIR);	// open txt data file
 ImportRows=split(ImportString, "\n");
+ImportRows=Array.deleteIndex(ImportRows,0);
 
+ImportName=newArray(ImportRows.length);
+for(z=0;z<ImportName.length;z++){
+temp=split(ImportRows[z],"\t");
+ImportName[z] = temp[0];
+
+
+}
 
 Dialog.create("Import_Row");
 	Dialog.addMessage("Choose Individual, starting with row 1");
-		Dialog.addNumber("Row", 1);
+		Dialog.addChoice("Row", ImportName,ImportName[0]);
 Dialog.show();
 
-impRow = Dialog.getNumber();
-
+impRow = Dialog.getChoice();
+impRow = index(ImportName,impRow);
 
 
 Import_Array = split(ImportRows[impRow], "\t");

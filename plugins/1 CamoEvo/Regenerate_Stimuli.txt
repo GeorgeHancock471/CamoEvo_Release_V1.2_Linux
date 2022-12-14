@@ -54,7 +54,7 @@ if(checkDir1.length == checkDir2.length) File.setDefaultDir(getDirectory("plugin
 
 
 
-popDIR = getDirectory("Choose-Population");
+popDIR = getDirectory("Choose_Population");
 
 fileList  =  getFileList(popDIR);
 
@@ -85,12 +85,13 @@ useDataSetGate = 0;
 //If there are no generation .txt
 // Then recreate stimuli with the recreator.
 
+
 oldCheck=1;
 if(!File.exists(popDIR + "gen_0_ranks")) oldCheck=0;
 
 if(numGenArray.length<1 || oldCheck==0){
 
-	if(dataSet.length>0){
+	if(dataSet.length>0 ){
 	
 	dataSet = File.openAsString(popDIR + dataSet[0]);
 	dataRows = split(dataSet,"\n");
@@ -103,6 +104,11 @@ if(numGenArray.length<1 || oldCheck==0){
 
 }
 	
+	
+// Dialog
+// Select Generation	
+	
+	
 
 Dialog.create("Choose-Gen");
 		Dialog.addMessage("________________Choose Generation___________________");
@@ -112,10 +118,15 @@ Dialog.show();
 genChoice = parseInt(Dialog.getChoice());
 
 
+
+
+
+
+
+
 // STEP 2, Get the Records
 ///==========================================================================================
 
-//useDataSetGate=0;
 
 if(useDataSetGate == 0){
 
@@ -140,8 +151,6 @@ recordLines = split(recordText, "\n");
 
 if(useDataSetGate == 1){
 
-
-
 	startLine = (genChoice*popSize)+1;
 	stopLine = ((genChoice+1)*popSize)+1;
 
@@ -156,23 +165,20 @@ if(useDataSetGate == 1){
 
 	TargetSettings = File.openAsString(TargetDirectory+"Target_Settings.txt");
 	TargetSettingsRows = split(TargetSettings , "\n");
-
+	
 	for(i=0; i<TargetSettingsRows.length; i++){
 	temp = TargetSettingsRows[i];
-
 	if(startsWith(temp, TargetChoice)){
 	TargetSetting = temp;
 	}
-
 	}
-
+	
 	TargetChoiceSettings = split(TargetSetting, "\t");
 
 	TargetChoiceScale = parseFloat(TargetChoiceSettings[2]);
 	TargetPatternChoice = TargetChoiceSettings[3];
 	TargetChoiceMinRotation = parseFloat(TargetChoiceSettings[5]);
 	TargetChoiceMaxRotation = parseFloat(TargetChoiceSettings[6]);
-
 }
 
 
@@ -591,7 +597,7 @@ if(imageMod != "none"){
 run(imageMod);
 }
 
-run("Gaussian Blur...", "sigma=0.1 slice");
+//run("Gaussian Blur...", "sigma=0.1 slice");
 
 
 

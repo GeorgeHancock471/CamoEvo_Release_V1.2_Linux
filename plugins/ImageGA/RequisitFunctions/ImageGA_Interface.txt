@@ -313,8 +313,8 @@ Dialog.create("Protective Settings");
 
 		Dialog.addMessage("___________________ (7.0) Protective Settings_______________________");
 		Dialog.addMessage("Note doesn't currently work if sex is enabled");
-		Dialog.addNumber("Clone the best 2 individuals?", 0, parseFloat(defaultSettings[21]));
-		Dialog.addNumber("Revive the best 2 individuals if killed?", 0, parseFloat(defaultSettings[22]));
+		Dialog.addNumber("Clone the best 2 individuals?", parseFloat(defaultSettings[21]));
+		Dialog.addNumber("Revive the best 2 individuals if killed?", parseFloat(defaultSettings[22]));
 		
 	Dialog.show();
 

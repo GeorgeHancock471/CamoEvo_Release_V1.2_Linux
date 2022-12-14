@@ -70,6 +70,12 @@ return roiLocs1;
   
 
 
+PopLocal = getDirectory("plugins") + "2 CamoReq/PopLocation.txt";
+PopLocation = File.openAsString(PopLocal);
+PopLocation=split(PopLocation, "\n");
+PopLocation = PopLocation[0];
+PopLocation = PopLocation;
+
 
 
 PatternTemplate = getDirectory("plugins") + "2 CamoReq/PatternTemplate.txt";
@@ -117,6 +123,40 @@ Var30 =  newArray();
 Var31 =  newArray();
 
 Temp = split(GenesRows[0],"\t");
+
+//Modify Phenotype Ranges
+//=============================================================
+phenoRangeDIR = PopLocation+"Transform_PhenotypeRanges.txt";
+
+if(File.exists(phenoRangeDIR)){
+
+
+phenoRangeSTR = File.openAsString(phenoRangeDIR );
+phenoRangeARR = split(phenoRangeSTR,"\n");
+phenoRangeMIN =  split(phenoRangeARR[1],"\t");
+phenoRangeMAX =  split(phenoRangeARR[2],"\t");
+
+	for(i=1;i<GenesRows.length;i++){
+	
+	tArr = split(GenesRows[i],"\t");
+
+	for(j=4;j<Temp.length;j++){
+	
+	tV = parseFloat(tArr[j]);
+	
+	tMx =  parseFloat(phenoRangeMAX[j]);
+	tMn =  parseFloat(phenoRangeMIN[j]);
+	
+	tArr[j] = tV *(tMx-tMn) + tMn;
+
+	}
+	
+	GenesRows[i] = String.join(tArr,"\t");
+	
+	}
+	
+}
+//=============================================================
 
 
 
@@ -204,12 +244,6 @@ Var31 = Array.concat(Var31,Temp[v31]);
 
 
 
-
-PopLocal = getDirectory("plugins") + "2 CamoReq/PopLocation.txt";
-PopLocation = File.openAsString(PopLocal);
-PopLocation=split(PopLocation, "\n");
-PopLocation = PopLocation[0];
-PopLocation = PopLocation;
 
 PopulationSet = PopLocation+"Settings_Population.txt";
 PopulationSettings = File.openAsString(PopulationSet );

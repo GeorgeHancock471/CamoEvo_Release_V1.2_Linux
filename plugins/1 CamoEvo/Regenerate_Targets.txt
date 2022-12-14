@@ -56,6 +56,13 @@ if(checkDir1.length == checkDir2.length) File.setDefaultDir(getDirectory("plugin
 
 popDIR = getDirectory("Choose-Population");
 
+
+PopLocal = getDirectory("plugins") + "2 CamoReq/PopLocation.txt";
+dataFile = File.open(PopLocal);
+print(dataFile, popDIR );
+File.close(dataFile);
+
+
 fileList  =  getFileList(popDIR);
 
 Leng = lengthOf(fileList );

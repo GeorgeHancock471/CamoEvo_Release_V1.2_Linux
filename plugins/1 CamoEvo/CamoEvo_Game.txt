@@ -46,7 +46,7 @@ setPasteMode("Copy");
 		TimeOutTime= 15000;
 		StartSpace = String.join(newArray(0,85, -50, 50, 10, 80),"\t");
 		ColourSpace = String.join(newArray(0,100, -80, 80, -80, 80),"\t");
-		FitnessValue = "Camouflage";
+		FitnessValue = "No";
 
 //----------------------------------------------------------------------------------------------------------------
 // 2) Check that all the required interface images are present
@@ -2394,20 +2394,23 @@ patternChoice = Dialog.getRadioButton;
 if(patternChoice == "Animal Unilateral"){
 open(  getDirectory("plugins") +  "2 CamoReq/ExamplePatterns/animal_uni.tif");
 rename("Pattern");
-patternType = "animal_uni";
+patternType = "Animals";
+bil="no";
 }
 
 if(patternChoice == "Animal Bilateral"){
 open(  getDirectory("plugins") +  "2 CamoReq/ExamplePatterns/animal_bi.tif");
 rename("Pattern");
-patternType = "animal_bil";
+patternType = "Animals";
+bil="yes";
 }
 
 
 if(patternChoice == "Egg"){
 open(  getDirectory("plugins") +  "2 CamoReq/ExamplePatterns/egg.tif");
 rename("Pattern");
-patternType = "egg";
+patternType = "Egg";
+bil="no";
 }
 
 selectImage("Pattern");
@@ -2523,7 +2526,8 @@ Size = 200;
 happyCheck = 0;
 while(happyCheck == 0){
 
-
+windowWidth=getWidth();
+windowHeight=getHeight();
 
 Dialog.createNonBlocking("Choose Pixel Size");
 
@@ -2578,7 +2582,7 @@ close("Target");
 selectImage("Startup");
 
 
-appendStringArray = newArray(TargetType, ShapeName, Size, patternType, 200, -180, 180);
+appendStringArray = newArray(TargetType, ShapeName, Size, patternType, 200, -180, 180, 0, 0, bil);
 appendString = String.join(appendStringArray, "\t");
 
 TargetSettingDirect = getDirectory("plugins")+ "1 CamoEvo/Targets/Target_Settings.txt";
@@ -3009,7 +3013,7 @@ run("Select None");
 	b2_y2= b2_y1 + 110;
 
 
-//BUTTON 3, 32 individuals
+//BUTTON 3, 36 individuals
 //-----------------------------------------
 
 	b3_x1= 1001 + (iButtonShift/2);
@@ -3149,7 +3153,7 @@ exit
 		Tool=1;
 		 if(flag&16!=0){ wait(200);
 		
-		PopSize = 32;
+		PopSize = 36;
 		whileGate=1;
 
 
@@ -3895,7 +3899,7 @@ if(TargetType == "Default_Egg") StartSpace = String.join(newArray(0,1, 0, 0.8, 0
 }
 
 if(StartSpace == "Measure"){
-
+setPasteMode("Copy");
 
 
 
@@ -4578,7 +4582,7 @@ if(TargetType == "Default_Egg") ColourSpace = String.join(newArray(0,1, 0, 0.8, 
 }
 
 if(ColourSpace == "Measure"){
-
+setPasteMode("Copy");
 
 			lMin =0;
 			lMax = 100;
@@ -4718,7 +4722,7 @@ if(isOpen("ColourSpace")){
 
 
 
-if(StartSpace == "Custom" && TargetType != "Default_Egg"){
+if(ColourSpace == "Custom" && TargetType != "Default_Egg"){
 
 			colourHappyGate = 0;
 
@@ -4851,7 +4855,7 @@ if(StartSpace == "Custom" && TargetType != "Default_Egg"){
 
 } // End Custom
 
-if(StartSpace == "Custom" && TargetType == "Default_Egg"){
+if(ColourSpace == "Custom" && TargetType == "Default_Egg"){
 
 colourHappyGate=0;
 
@@ -5134,7 +5138,7 @@ exit
 		Tool=1;
 		 if(flag&16!=0){ wait(200);
 		
-		FitnessValue = "Camouflage";
+		FitnessValue = "No";
 		whileGate=1;
 		}
 		}
@@ -5147,7 +5151,7 @@ exit
 		Tool=1;
 		 if(flag&16!=0){ wait(200);
 		
-		FitnessValue = "Signalling";
+		FitnessValue = "Yes";
 		whileGate=1;
 
 		}
@@ -5469,22 +5473,23 @@ close("bg_close");
 
 
 MeasureMethod = "survival";
-if(NumSlide>1) MeasureMethod = "rank";
+//if(NumSlide>1) MeasureMethod = "rank";
 
 dataFile = File.open(makeFolderDIR+"Settings_Population.txt");
 
-print(dataFile, "Target = "+"\t"+TargetType);
-print(dataFile, "Generation = "+"\t"+GenerationLength);
-print(dataFile, "PopSize = "+"\t"+PopSize);
-print(dataFile, "NumSlide = "+"\t"+NumSlide);
-print(dataFile, "TimeOutTime = "+"\t"+TimeOutTime);
-print(dataFile, "StartSpace = "+"\t"+StartSpace);
-print(dataFile, "ColourSpace = "+"\t"+ColourSpace);
-print(dataFile, "FitnessValue = "+"\t"+FitnessValue);
-print(dataFile, "MeasureMethod = "+"\t"+MeasureMethod);
-print(dataFile, "Transition = "+"\t"+"centre");
-print(dataFile, "DemoImage = "+"\t"+"none");
-print(dataFile, "DemoCount = "+"\t"+"0");
+print(dataFile, "Target = "+"\t"+TargetType+"\t"+"\t"+"The TargetSetting Choice");
+print(dataFile, "Generation = "+"\t"+GenerationLength+"\t"+"\t"+"The number of generations, will overide algorithm settings if there are none existing.");
+print(dataFile, "PopSize = "+"\t"+PopSize+"\t"+"\t"+"The number of individuals in a population.");
+print(dataFile, "NumSlide = "+"\t"+NumSlide+"\t"+"\t"+"The number of individuals per slide.");
+print(dataFile, "TimeOutTime = "+"\t"+TimeOutTime+"\t"+"\t"+"The amount of time allowed on each slide.");
+print(dataFile, "StartSpace = "+"\t"+StartSpace+"\t"+"\t"+"The starting Lab ranges of colour.");
+print(dataFile, "ColourSpace = "+"\t"+ColourSpace+"\t"+"\t"+"The full range of Lab colours.");
+print(dataFile, "InvertFit? = "+"\t"+FitnessValue+"\t"+"\t"+"Whether fitness is inverted (Yes / No).");
+print(dataFile, "FitnessValue = "+"\t"+MeasureMethod+"\t"+"\t"+"The fitness measure,  (survival,capture,response and rank).");
+print(dataFile, "Transition = "+"\t"+"centre"+"\t"+"\t"+"The transition method used by the game (centre, click, wait).");
+print(dataFile, "DemoImage = "+"\t"+"None"+"\t"+"\t"+"Whether demo targets are shown before hand (None, First, Every, Resurrect).");
+print(dataFile, "DemoCount = "+"\t"+"0"+"\t"+"\t"+"Number of demo targets");
+print(dataFile, "RepeatNum = "+"\t"+"1"+"\t"+"\t"+"Number of repeats per target");
 File.close(dataFile);
 
 

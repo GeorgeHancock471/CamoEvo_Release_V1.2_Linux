@@ -1,5 +1,5 @@
 Cycles per degree
-8
-Angular width of image
-20
+6
+Viewing distance
+500
 5

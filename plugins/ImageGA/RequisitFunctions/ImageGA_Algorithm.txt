@@ -579,11 +579,46 @@ fitnessArray[i] = parseFloat(tStr1);
 idArray[i] =toString(tStr2);
 } // (i)
 
+fitnessArrayTemp = Array.copy(fitnessArray);
+idArrayTemp = Array.copy(idArray);
+
+lengthRecall = Array.copy(idArray);
+
+
+fitnessArray = newArray();
+idArray  = newArray();
+
+
+
+while(lengthRecall.length > 0){
+IDTemp = lengthRecall[0];
+
+idArray=Array.concat(idArray,IDTemp);
+
+avg=0;
+n=0;
+for(i=0;i<idArrayTemp.length;i++){
+if(idArrayTemp[i]==IDTemp){
+avg=avg+fitnessArrayTemp[i];
+n=n+1;
+}
+}
+
+
+fitnessArray=Array.concat(fitnessArray,avg/n);
+lengthRecall=Array.deleteValue(lengthRecall,IDTemp);
+}
+
 
 
 Array.sort(fitnessArray,idArray);
 
 Array.getStatistics(fitnessArray, minFitness, maxFitness, meanFitness, stdDevFitness);
+
+
+
+
+
 
 
 
@@ -6995,9 +7030,12 @@ for(j=0;j<rescueArray.length;j++){
 	
 	rArray = Array.copy(tArray1);
 	
+		
+	if(segmentationMutate>0){
 	rArray[0] = "Gen"+currentGenNum+1+"_Mut0_IDR"+j; 
 	rArray[1] = tArray1[1]; 
 	rArray[2] = tArray1[2];
+	}
 	
 	rStr = String.join(rArray,"\t");
 

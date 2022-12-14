@@ -1,16 +1,16 @@
-Visible
+Visible & UV
 Same photo
 0
-7
+7,93
 0
 0
 0
-None
+Manual Align
 16
 1
 0.005
-1
-1
+0
+RAW Photo
 Linear Normalised Reflectance Stack
-Test
-1
+test
+0

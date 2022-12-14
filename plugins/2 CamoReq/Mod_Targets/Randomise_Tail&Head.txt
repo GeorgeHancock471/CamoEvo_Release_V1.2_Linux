@@ -241,4 +241,4 @@ run("Paste");
 
 run("Select None");
 
-run("Copy to System");
+//run("Copy to System");

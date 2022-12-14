@@ -277,6 +277,8 @@ FitnessArray[A] = pow(FitnessArray[A]/100,4) *1000;
 
 NoiseArray[A] = FitnessArray[A]-pow(random(),3)*FitnessArray[A]*0.75; 
 
+NoiseArray[A] = FitnessArray[A]; 
+
 //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 // Save Phenotype
 //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
